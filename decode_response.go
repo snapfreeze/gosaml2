@@ -12,9 +12,9 @@ import (
 	"encoding/xml"
 
 	"github.com/beevik/etree"
-	"github.com/russellhaering/gosaml2/types"
 	dsig "github.com/russellhaering/goxmldsig"
 	"github.com/russellhaering/goxmldsig/etreeutils"
+	"github.com/snapfreeze/gosaml2/types"
 )
 
 func (sp *SAMLServiceProvider) validationContext() *dsig.ValidationContext {
@@ -211,7 +211,7 @@ func (sp *SAMLServiceProvider) validateAssertionSignatures(el *etree.Element) er
 //ValidateEncodedResponse both decodes and validates, based on SP
 //configuration, an encoded, signed response. It will also appropriately
 //decrypt a response if the assertion was encrypted
-func (sp *SAMLServiceProvider) ValidateEncodedResponse(encodedResponse string) (*types.Response, error) {
+func (sp *SAMLServiceProvider) ValidateEncodedResponse(encodedResponse string, skipDefaultValidation bool) (*types.Response, error) {
 	raw, err := base64.StdEncoding.DecodeString(encodedResponse)
 	if err != nil {
 		return nil, err
@@ -269,9 +269,11 @@ func (sp *SAMLServiceProvider) ValidateEncodedResponse(encodedResponse string) (
 		}
 	}
 
-	err = sp.Validate(decodedResponse)
-	if err != nil {
-		return nil, err
+	if skipDefaultValidation == false {
+		err = sp.Validate(decodedResponse)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return decodedResponse, nil

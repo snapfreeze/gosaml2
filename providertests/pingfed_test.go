@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/russellhaering/gosaml2"
+	"github.com/snapfreeze/gosaml2"
 )
 
 var pingFedScenarioErrors = map[int]string{

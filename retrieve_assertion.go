@@ -37,7 +37,7 @@ func (sp *SAMLServiceProvider) RetrieveAssertionInfo(encodedResponse string) (*A
 		Values: make(Values),
 	}
 
-	response, err := sp.ValidateEncodedResponse(encodedResponse)
+	response, err := sp.ValidateEncodedResponse(encodedResponse, false)
 	if err != nil {
 		return nil, ErrVerification{Cause: err}
 	}
